@@ -2,3 +2,6 @@
 *.pyo
 *.db
 __pycache__/
+/db/
+/logs/
+.ipynb_checkpoints/

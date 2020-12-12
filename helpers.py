@@ -6,6 +6,7 @@ import time
 import psutil
 import sqlite3 as lite
 import sys
+import os
 
 def init_dht(model=22):
     model = int(model)
@@ -52,9 +53,9 @@ def read_dht(dhtDevice, deg='F'):
             time.sleep(2)
 
 
-def create_table(debug=False):
+def create_table(location, debug=False):
     # Create DHT_data table if it doesn't exist already
-    con = lite.connect('sensorsData.db')
+    con = lite.connect(os.path.join(location, 'sensorsData.db'))
     with con:
         cur = con.cursor()
         #if table 'DHT_data' exists:
@@ -65,14 +66,12 @@ def create_table(debug=False):
         except:
             if debug:
                 print("DHT_data table already exists")
+    return con
 
 
-def add_entry(timestamp, temp, hum, debug=False):
-    # Ensure the 'sensorsData.db' exists:
-    create_table()
+def add_entry(db, timestamp, temp, hum, debug=False):
     # Add a temp/humidity reading to the database
-    con = lite.connect('sensorsData.db')
-    with con:
+    with db as con:
         cur = con.cursor()
         if debug:
             print("Adding DHT reading to DHT_data table: ", timestamp, temp, hum)

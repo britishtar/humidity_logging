@@ -10,7 +10,7 @@ import psutil
 # Set variables appropriately:
 logfile = "/home/pi/dhtlogs/DHT-{}.log".format(dt.now().strftime("%Y-%m-%d"))
 timezone = pytz.timezone("America/New_York")
-sampling_interval = 60.0 # number of seconds to wait betweek read attempts
+sampling_interval = 60.0 # number of seconds to wait between read attempts
 
 
 timestamp = timezone.localize(dt.now()).strftime("%Y-%m-%d-%H:%M:%S") 

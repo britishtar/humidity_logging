@@ -45,7 +45,7 @@ Edit "dht11-logging.py":
 Add a cron job to start the script on boot:
 
 ```shell
-$ vim crontab -e
+$ crontab -e
 ```
 
 Add the following line to the end:
@@ -58,4 +58,9 @@ Add the following line to the end:
 + Make sure the ampersand is at the end, this will allow boot to continue while the script is running
 + Make sure this is done with the pi user, not sudo/root.
 
+*NOTE: I also have my pi reboot daily at 5 mins after midnight by adding the following `daily-reboot` script to /etc/cron.daily/:
 
+```
+#!/bin/sh
+shutdown -r 00:05
+```

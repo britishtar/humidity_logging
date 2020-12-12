@@ -6,7 +6,7 @@ import time
 import board
 import adafruit_dht
 import psutil
-from helpers import init_dht, read_dht
+from helpers import init_dht, read_dht, add_entry
 
 # Set variables appropriately:
 dht_model = 22 # set to 11 for DHT11
@@ -33,6 +33,7 @@ while True:
         temperature_f = values[0]
         humidity = values[1]
         timestamp = timezone.localize(dt.now()).strftime("%Y-%m-%d-%H:%M:%S") 
+        add_entry(dt.now(), temperature_f, humidity)
         logstring = "{}, Temp: {} F, Humidity: {}%".format(timestamp, temperature_f, humidity)
         print(logstring)
         with open(logfile, "a") as f:

@@ -40,19 +40,22 @@ dhtDevice = init_dht(dht_model)
 print("entering logging mode, sampling interval set to: {} seconds".format(sampling_interval))
 
 while True:
-    logfile = "/home/pi/dhtlogs/DHT-{}.log".format(dt.now().strftime("%Y-%m-%d"))
+    logfile = os.path.join(log_location, "DHT-{}.log".format(dt.now().strftime("%Y-%m-%d")))
     try:
         # Print the values to the serial port
         values = read_dht(dhtDevice)
         temperature_f = values[0]
         humidity = values[1]
         timestamp = timezone.localize(dt.now()).strftime("%Y-%m-%d-%H:%M:%S") 
+        print("Adding log entry at " + timestamp)
         add_entry(db, dt.now(), temperature_f, humidity)
         logstring = "{}, Temp: {} F, Humidity: {}%".format(timestamp, temperature_f, humidity)
         print(logstring)
         with open(logfile, "a") as f:
+            print("Opened logfile " + logfile)
             f.write(logstring)
             f.write("\n")
+            print("Wrote " + logstring)
 
     except RuntimeError as error:
         # Errors happen fairly often, DHT's are hard to read, just keep going

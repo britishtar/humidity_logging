@@ -11,11 +11,11 @@ from helpers import init_dht, read_dht, add_entry, create_table
 
 # Set variables appropriately:
 dht_model = 22 # set to 11 for DHT11
-log_location = './logs'
+log_location = '/home/pi/repos/humidity_logging/logs'
 sqlite = True
-sqlite_location = './db'
+sqlite_location = '/home/pi/repos/humidity_logging/db'
 timezone = pytz.timezone("America/New_York")
-sampling_interval = 60.0 # number of seconds to wait between readings
+sampling_interval = 5 * 60.0 # number of seconds to wait between readings
 
 # create log directory, if necessary
 if not os.path.isdir(log_location):
@@ -47,8 +47,10 @@ while True:
         temperature_f = values[0]
         humidity = values[1]
         timestamp = timezone.localize(dt.now()).strftime("%Y-%m-%d-%H:%M:%S") 
-        print("Adding log entry at " + timestamp)
+        print("Adding sqlite entry at " + timestamp)
         add_entry(db, dt.now(), temperature_f, humidity)
+
+        print("Adding log entry to " + logfile + " at " + timestamp)
         logstring = "{}, Temp: {} F, Humidity: {}%".format(timestamp, temperature_f, humidity)
         print(logstring)
         with open(logfile, "a") as f:
